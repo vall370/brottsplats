@@ -14,9 +14,9 @@ class MapComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 51.505,
-      lng: -0.09,
-      zoom: 12,
+      lat: 60.1282,
+      lng: 18.6435,
+      zoom: 5,
       bikeMarkers: []
     };
   }
