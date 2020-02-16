@@ -1,56 +1,55 @@
 import React, { Component } from "react";
 import { Map, TileLayer } from "react-leaflet";
-import L from "leaflet";
 import axios from "axios";
-
-const customMarker = new L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.4.0/dist/images/marker-icon.png",
-  iconSize: [25, 41],
-  iconAnchor: [10, 41],
-  popupAnchor: [2, -40]
-});
+import Markers from './Markers';
 
 class MapComp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lat: 60.1282,
-      lng: 18.6435,
       zoom: 5,
-      bikeMarkers: []
+      center: [60.1282, 18.6435],
+      markers: [],
+      currentMarker: null,
+      height: null
     };
   }
+  
   updateDimensions() {
     const height = window.innerWidth >= 992 ? window.innerHeight : 400
     this.setState({ height: height })
   }
+
   componentDidMount() {
-    const map = this.leafletMap.leafletElement;
     axios.get("https://api.myjson.com/bins/fvrjc").then(response => {
+      let markers = [];
       response.data.coordinates.map(el => {
-        let markerArray = [];
-        const marker = L.marker([el.latitude, el.longitude], { icon: customMarker });
-        marker.addTo(map);
+        markers.push({ position: [el.latitude, el.longitude] });
       });
+      this.setState({ markers });
     });
   }
 
+  handleMarkerClick = i => {
+    this.setState({
+      currentMarker: i,
+      center: this.state.markers[i].position
+    });
+  };
+
   render() {
-    const position = [this.state.lat, this.state.lng];
     return (
       <div id="map">
         <Map
           style={{ height: "100vh" }}
-          center={position}
+          center={this.state.center}
           zoom={this.state.zoom}
-          ref={m => {
-            this.leafletMap = m;
-          }}
         >
           <TileLayer
+            attribution={`© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors`}
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           />
+          <Markers markers={this.state.markers} onMarkerClick={this.handleMarkerClick} />
         </Map>
       </div>
     );
