@@ -13,9 +13,11 @@ const Home = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+        var todayTimeStamp = +new Date(); // Unix timestamp in milliseconds
+
       setLoading(true);
       const res = await axios.get(
-        "https://polisen.se/api/events?DateTime=2020-02-10"
+        "https://polisen.se/api/events?DateTime=2020-02-17"
       );
       setPosts(res.data);
       setLoading(false);

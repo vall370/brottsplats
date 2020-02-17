@@ -8,16 +8,19 @@ import Home from './Home';
 import { About } from './About';
 import { Karta } from './Karta';
 
-import Sidebar from './components/Sidebar';
 import Footer from './Footer';
+import Sidebar from "./components/Sidebar";
 
 const App = () => {
   return (
     <div>
+  <Sidebar/>
+
     <React.Fragment>
     <Router>
-      <NavigationBar />
+      
       <Switch>
+
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/map" component={Karta} />
@@ -26,6 +29,7 @@ const App = () => {
     </Router>
   </React.Fragment>
   <Footer/>
+
   </div>
   );
 };

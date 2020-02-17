@@ -1,115 +1,162 @@
 import React from 'react';
-import styled from 'styled-components';
-import { BrowserRouter as Router, Route, Link, withRouter } from "react-router-dom";
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
 
-const StyledSideNav = styled.div`   
-    position: fixed;     /* Fixed Sidebar (stay in place on scroll and position relative to viewport) */
-    height: 100%;
-    width: 75px;     /* Set the width of the sidebar */
-    z-index: 1;      /* Stay on top of everything */
-    top: 3.4em;      /* Stay at the top */
-    background-color: #222; /* Black */
-    overflow-x: hidden;     /* Disable horizontal scroll */
-    padding-top: 10px;
-`;
+const drawerWidth = 240;
 
-class SideNav extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activePath: props.location.pathname,
-            items: [
-                {
-                  path: '/', /* path is used as id to check which NavItem is active basically */
-                  name: 'Home',
-                  css: 'fa fa-fw fa-home',
-                  key: 1 /* Key is required, else console throws error. Does this please you Mr. Browser?! */
-                },
-                {
-                  path: '/about',
-                  name: 'About',
-                  css: 'fa fa-fw fa-clock',
-                  key: 2
-                },
-                {
-                  path: '/NoMatch',
-                  name: 'NoMatch',
-                  css: 'fas fa-hashtag',
-                  key: 3
-                },
-              ]
-        }
-    }
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(5% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(7) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 1,
+    },
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}));
 
-    onItemClick = (path) => {
-        this.setState({ activePath: path });
-    }
+export default function Sidebar() {
+  const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
 
-    render() {
-        const { items, activePath } = this.state;
-        return(
-            <StyledSideNav>
-                {
-                    items.map((item) => {
-                        return (
-                            <NavItem 
-                                path={item.path}
-                                name={item.name}
-                                css={item.css}
-                                onItemClick={this.onItemClick}
-                                active={item.path === activePath}
-                                key={item.key}
-                            />
-                        );
-                    })
-                }
-            </StyledSideNav>
-        );
-    }
-}
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
 
-const RouterSideNav = withRouter(SideNav);
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
-const StyledNavItem = styled.div`
-    height: 70px;
-    width: 75px; /* width must be same size as NavBar to center */
-    text-align: center; /* Aligns <a> inside of NavIcon div */
-    margin-bottom: 0;   /* Puts space between NavItems */
-    a {
-        font-size: 2.7em;
-        color: ${(props) => props.active ? "white" : "#9FFFCB"};
-        :hover {
-            opacity: 0.7;
-            text-decoration: none; /* Gets rid of underlining of icons */
-        }  
-    }
-`;
-
-class NavItem extends React.Component {
-    handleClick = () => {
-        const { path, onItemClick } = this.props;
-        onItemClick(path);
-    }
-
-    render() {
-        const { active } = this.props;
-        return(
-            <StyledNavItem active={active}>
-                <Link to={this.props.path} className={this.props.css} onClick={this.handleClick}>
-                    <NavIcon></NavIcon>
-                </Link>
-            </StyledNavItem>
-        );
-    }
-}
-
-const NavIcon = styled.div`
-`;
-
-export default class Sidebar extends React.Component {
-    render() {
-        return (
-            <RouterSideNav></RouterSideNav>
-        );
-    }
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar
+        position="sticky"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            Mini variant drawer
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
+    </div>
+  );
 }
