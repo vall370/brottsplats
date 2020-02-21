@@ -15,7 +15,7 @@ const Home = () => {
     const fetchPosts = async () => {
       setLoading(true);
       const res = await axios.get(
-        "https://polisen.se/api/events?DateTime=2020-02-10"
+        "http://brottapi.valjoh.se/public/index.php/getLocationData"
       );
       setPosts(res.data);
       setLoading(false);

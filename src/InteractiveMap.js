@@ -1,11 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import L from "leaflet";
-import carlton from "./fHctp.gif";
-import faker from "faker";
 
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
-import MarkerClusterGroup from "react-leaflet-markercluster";
+import { Map, TileLayer} from "react-leaflet";
 import markers from "./markers";
 
 import "./styles.css";
