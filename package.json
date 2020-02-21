@@ -1,6 +1,7 @@
 {
   "name": "laundree",
   "version": "0.1.0",
+  "proxy": "http://brottsapi.valjoh.se",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.9.3",

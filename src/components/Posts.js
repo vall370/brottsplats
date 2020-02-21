@@ -18,7 +18,7 @@ const Posts = ({ posts, loading }) => {
             <div>
               <h6>{post.summary} {post.name}</h6>
               <a href={post.url}>Läs mer hos polisen</a>
-              <p class="border-bottom">{post.location.gps}, {post.location.name}</p>
+              <p class="border-bottom">{post.latitude},{post.longitude}, {post.location_name}</p>
 
             </div>
             </Link>
