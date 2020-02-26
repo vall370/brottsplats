@@ -4,18 +4,24 @@ import Pagination from "./components/Pagination";
 import axios from "axios";
 import "./App.css";
 import Graph from "./Graph";
-import { Card, Button } from "react-bootstrap";
+import moment from 'moment'
+
+import { Card} from "react-bootstrap";
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
+  let today = new Date();
+  let date=today.getFullYear() + "-"+ parseInt(today.getMonth()+1) +"-"+ today.getDate();
+  var date2 = new Date().toISOString().substr(0, 10).replace('T', ' ');
+ 
 
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
       const res = await axios.get(
-        "https://polisen.se/api/events?DateTime=2020-02-17"
+      `https://polisen.se/api/events?DateTime=${date2}`
       );
       setPosts(res.data);
       setLoading(false);
@@ -31,14 +37,6 @@ const Home = () => {
 
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
-  var todayTimeStamp = +new Date(); // Unix timestamp in milliseconds
-  var oneDayTimeStamp = 1000 * 60 * 60 * 24; // Milliseconds in a day
-  var diff = todayTimeStamp - oneDayTimeStamp;
-  var yesterdayDate = new Date(diff);
-  var date = new Date(diff)
-    .toISOString()
-    .substr(0, 10)
-    .replace("T", " ");
 
   return (
     <div>
@@ -46,6 +44,7 @@ const Home = () => {
         <div class="container">
           <div class="row">
             <div class="col-7">
+
               <Posts posts={currentPosts} loading={loading} />
               <Pagination
                 postsPerPage={postsPerPage}
@@ -57,7 +56,7 @@ const Home = () => {
               <Card>
                 <Card.Body>
                   <Card.Title>Brottsstatistik</Card.Title>
-                  <Graph />
+                  <Graph/>
                 </Card.Body>
               </Card>
               <br></br>

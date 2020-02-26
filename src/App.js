@@ -8,7 +8,8 @@ import { Karta } from './Karta';
 
 import Footer from './Footer';
 import Sidebar from "./components/Sidebar";
-import Post from './components/Post';
+import Post from './Post';
+import EventDate from './EventDate';
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/about" component={About} />
         <Route path="/map" component={Karta} />
         <Route path="/posts/:id" component={Post} />
+        <Route path="/date/:date" component={EventDate} />
 
       </Switch>
     </Router>

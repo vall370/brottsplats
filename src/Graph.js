@@ -12,7 +12,7 @@ export default class Graph extends React.Component {
     
       componentDidMount() {
     
-         axios('https://api.myjson.com/bins/8mw98')
+         axios('http://brottapi.valjoh.se/public/index.php/getTwoWeeksCrime')
           .then((response) => {
      
             const { crimes } = response.data;
