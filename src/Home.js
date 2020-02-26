@@ -21,7 +21,7 @@ const Home = () => {
     const fetchPosts = async () => {
       setLoading(true);
       const res = await axios.get(
-      `https://polisen.se/api/events?DateTime=${date2}`
+        "http://brottapi.valjoh.se/public/index.php/getLocationData"
       );
       setPosts(res.data);
       setLoading(false);
